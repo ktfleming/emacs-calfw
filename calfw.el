@@ -923,14 +923,18 @@ found at the variable, return nil."
 
 ;; Setter
 
+;; From https://github.com/kiwanami/emacs-calfw/issues/61
 (defun cfw:cp-move-cursor (dest date)
   "[internal] Just move the cursor onto the date. This function
 is called by `cfw:cp-set-selected-date'."
   (let ((pos (cfw:find-by-date dest date)))
     (when pos
       (goto-char pos)
-      (unless (eql (selected-window) (get-buffer-window (current-buffer)))
-        (set-window-point (get-buffer-window (current-buffer)) pos)))))
+      (when
+          (and
+            (get-buffer-window cfw:calendar-buffer-name)
+            (not (eql (selected-window) (get-buffer-window cfw:calendar-buffer-name))))
+        (set-window-point (get-buffer-window cfw:calendar-buffer-name) pos)))))
 
 (defun cfw:cp-set-selected-date (component date)
   "Select the date on the component. If the current view doesn't contain the date,
