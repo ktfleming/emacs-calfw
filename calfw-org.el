@@ -67,6 +67,9 @@ If value is nil, `org-agenda-entry-types' is used.")
 Setting a list of the custom agenda files, one can use the
 different agenda files from the default agenda ones.")
 
+(defvar cfw:org-agenda-files nil
+  "Org agenda files to use when generating the calendar.")
+
 (defvar cfw:org-overwrite-default-keybinding nil
   "Overwrites default keybinding. It needs restarting of Emacs(if not work)
 For example,
@@ -90,7 +93,8 @@ For example,
 (defun cfw:org-collect-schedules-period (begin end)
   "[internal] Return org schedule items between BEGIN and END."
   (let ((org-agenda-prefix-format " ")
-        (span 'day))
+        (span 'day)
+        (org-agenda-files cfw:org-agenda-files))
     (setq org-agenda-buffer
       (when (buffer-live-p org-agenda-buffer)
         org-agenda-buffer))
